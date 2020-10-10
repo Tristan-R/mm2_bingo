@@ -71,7 +71,9 @@ export default {
                 "MINIGAME",
                 "LITTLE TIMMY LEVEL",
                 "SIDE SCROLLER",
-                "TROLL LEVEL"
+                "TROLL LEVEL",
+                "MULTIPLAYER LEVEL",
+                "SNAKE BLOCKS"
             ],
             itemsUsed: []
         }
