@@ -3,8 +3,8 @@
         <div class="columns">
             <div class="column is-offset-2 is-8">
                 <div class="columns is-multiline is-gapless is-mobile">
-                    <div class="column is-one-fifth" v-for="(value,index) in Array(25)" :key="index">
-                        <Square :text="getText(index)" />
+                    <div class="column" :class="{'is-one-fifth': selectedSize.tiles === 25}" v-for="(value,index) in Array(selectedSize.tiles)" :key="index + 1">
+                        <Square :text="getText(index)"></Square>
                     </div>
                 </div>
             </div>
@@ -13,17 +13,31 @@
 </template>
 
 <script>
-import Card from '~/components/Card'
-import Square from "@/components/Square";
+import Square from "~/components/Square";
 
 export default {
-    name: 'HomePage',
-    components: {
-        Card,
-        Square
-    },
     data: function () {
         return {
+            sizes: {
+                three: {
+                    title: '3x3',
+                    tiles: 9,
+                    midTile: 4,
+                    lengthMod: 'one-third'
+                },
+                five: {
+                    title: '5x5',
+                    tiles: 25,
+                    midTile: 12,
+                    lengthMod: 'one-fifth'
+                }
+            },
+            selectedSize: {
+                title: '5x5',
+                tiles: 25,
+                midTile: 12,
+                lengthMod: 'one-fifth'
+            },
             items: [
                 "ENEMY SPAM",
                 "SOUND EFFECTS EVERYWHERE",
@@ -37,7 +51,6 @@ export default {
                 "INFINITE FIRE FLOWER BOSS FIGHT",
                 "NO CHECKPOINTS (WITHOUT CLEAR CONDITION)",
                 "ENEMY SPAM (WITH STAR)",
-                "FREE",
                 "GOOD LEVEL",
                 "BUILDER / SUPERBALL LEVEL",
                 "THEMED AFTER ANOTHER GAME",
@@ -49,13 +62,39 @@ export default {
                 "TITLE LEVEL",
                 "TERRIBLY NAMED LEVEL",
                 "KILLS MARIO AT THE START",
-                "ON/OFF BLOCKS"
-            ]
+                "ON/OFF BLOCKS",
+                "SPEEDRUN",
+                "WATER LEVEL",
+                "DEV EXIT",
+                "#DGR LEVEL",
+                "ART LEVEL",
+                "MINIGAME",
+                "LITTLE TIMMY LEVEL",
+                "SIDE SCROLLER",
+                "TROLL LEVEL"
+            ],
+            itemsUsed: []
         }
     },
+    name: 'HomePage',
+    components: {
+        Square
+    },
     methods: {
-        getText(index) {
-            return this.items[index];
+        getText: function (index) {
+            if (index === this.selectedSize.midTile) {
+                return "FREE";
+            }
+
+            let randInt = Math.floor(Math.random() * this.items.length);
+            while (this.items[randInt] === undefined) {
+                randInt = Math.floor(Math.random() * this.items.length);
+            }
+            let returnItem = this.items[randInt];
+
+            delete this.items[randInt];
+
+            return returnItem;
         }
     }
 }

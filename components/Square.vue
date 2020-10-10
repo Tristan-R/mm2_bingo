@@ -1,5 +1,5 @@
 <template>
-    <div class="square" :class="{complete: isComplete}" @click="isComplete = !isComplete">
+    <div class="square" :class="{complete: isComplete}" @click="onClick">
         <div>
             {{ text }}
         </div>
@@ -12,7 +12,21 @@
         props: ['text'],
         data: function () {
             return {
-                isComplete: false
+                isComplete: false,
+                selectable: true
+            }
+        },
+        methods: {
+            onClick() {
+                if (this.selectable) {
+                    this.isComplete = !this.isComplete;
+                }
+            }
+        },
+        mounted: function () {
+            if (this.text === 'FREE') {
+                this.isComplete = true;
+                this.selectable = false;
             }
         }
     }
@@ -24,9 +38,10 @@
         height: 0;
         width: 100%;
         padding-bottom: 100%;
-        background-color: greenyellow;
+        background-color: lightcoral;
     }
     .square div {
+        color: black;
         padding-top: 50%;
         height: 0;
         display: flex;
@@ -35,6 +50,6 @@
         text-align: center;
     }
     .square.complete {
-        background-color: yellowgreen;
+        background-color: greenyellow;
     }
 </style>
