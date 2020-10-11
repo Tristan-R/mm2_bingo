@@ -3,8 +3,8 @@
         <div class="columns">
             <div class="column is-offset-2 is-8">
                 <div class="columns is-multiline is-gapless is-mobile">
-                    <div class="column" :class="{'is-one-fifth': selectedSize.tiles === 25}" v-for="(value,index) in Array(selectedSize.tiles)" :key="index + 1">
-                        <Square :text="getText(index)"></Square>
+                    <div class="column" :class="{'is-one-fifth': selectedSize.tiles === 25}" v-for="(value,index) in indexes" :key="index + 1">
+                        <Square :text="getText(value, index)"></Square>
                     </div>
                 </div>
             </div>
@@ -75,6 +75,7 @@ export default {
                 "MULTIPLAYER LEVEL",
                 "SNAKE BLOCKS"
             ],
+            indexes: [],
             itemsUsed: []
         }
     },
@@ -83,21 +84,22 @@ export default {
         Square
     },
     methods: {
-        getText: function (index) {
+        getText: function (value, index) {
             if (index === this.selectedSize.midTile) {
                 return "FREE";
             }
-
-            let randInt = Math.floor(Math.random() * this.items.length);
-            while (this.items[randInt] === undefined) {
-                randInt = Math.floor(Math.random() * this.items.length);
-            }
-            let returnItem = this.items[randInt];
-
-            delete this.items[randInt];
-
-            return returnItem;
+            return this.items[value];
         }
+    },
+    mounted: function () {
+        let indexes = [];
+        while (indexes.length < this.selectedSize.tiles) {
+            let randInt = Math.floor(Math.random() * this.items.length);
+            if (!indexes.includes(randInt)) {
+                indexes.push(randInt);
+            }
+        }
+        this.indexes = indexes;
     }
 }
 </script>
