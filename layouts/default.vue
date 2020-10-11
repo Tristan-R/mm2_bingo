@@ -18,7 +18,4 @@
 </script>
 
 <style>
-    html {
-        background-color: blue;
-    }
 </style>
