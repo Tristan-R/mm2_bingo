@@ -5,9 +5,10 @@
 </template>
 
 <script>
-import Game from "~/components/Game";
+import Game from "@/components/Game";
 
 export default {
+    name: "SinglePlayerGame",
     data: function () {
         return {}
     },
