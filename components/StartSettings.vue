@@ -1,7 +1,10 @@
 <template>
     <div>
-        <b-field>
+        <b-field v-if="singlePlayer">
             <strong>Single Player Game</strong>
+        </b-field>
+        <b-field v-else>
+            <strong>Multiplayer Game</strong>
         </b-field>
         <b-field label="Grid Size">
             <b-select
