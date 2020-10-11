@@ -79,7 +79,7 @@ export default {
             indexes: []
         }
     },
-    props: ['gameSize'],
+    props: ['gameSize', 'justCustom', 'customGoals'],
     components: {
         Square
     },
@@ -88,7 +88,19 @@ export default {
             if (index === this.selectedSize.midTile) {
                 return "FREE";
             }
-            return this.items[value];
+            if (this.customGoals) {
+                if (this.justCustom) {
+                    return this.customGoals[value];
+                } else {
+                    if (this.items.length <= value) {
+                        return this.customGoals[value - this.items.length];
+                    } else {
+                        return this.items[value];
+                    }
+                }
+            } else {
+                return this.items[value];
+            }
         }
     },
     mounted: function () {
@@ -96,9 +108,18 @@ export default {
             this.selectedSize = this.sizes[this.gameSize];
         }
 
+        let size = this.items.length;
+        if (this.customGoals) {
+            if (this.justCustom) {
+                size = this.customGoals.length;
+            } else {
+                size += this.customGoals.length;
+            }
+        }
+
         let indexes = [];
         while (indexes.length < this.selectedSize.tiles) {
-            let randInt = Math.floor(Math.random() * this.items.length);
+            let randInt = Math.floor(Math.random() * size);
             if (!indexes.includes(randInt)) {
                 indexes.push(randInt);
             }
