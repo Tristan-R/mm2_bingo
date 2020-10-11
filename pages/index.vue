@@ -11,21 +11,21 @@
                         Single Player
                     </b-button>
                 </b-field>
+                <b-tooltip
+                    style="width: 100%"
+                    label="I'm working on it"
+                    type="is-dark"
+                    position="is-right">
                 <b-field>
                     <b-button
-                        tag="router-link"
-                        to="/multiplayer"
+                        icon-left="lock"
                         type="is-link"
                         expanded
                         disabled>
-                        <b-tooltip
-                            label="I'm working on it"
-                            type="is-dark"
-                            position="is-right">
-                        </b-tooltip>
                         Multiplayer
                     </b-button>
                 </b-field>
+                </b-tooltip>
             </div>
         </div>
     </section>

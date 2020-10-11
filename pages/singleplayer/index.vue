@@ -2,8 +2,6 @@
     <section class="section">
         <div class="columns" v-if="showStart">
             <div class="column is-4 is-offset-4">
-                <h1>Single Player Game</h1>
-                <br/>
                 <StartSettings :single-player="true"></StartSettings>
             </div>
         </div>

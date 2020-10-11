@@ -1,5 +1,8 @@
 <template>
     <div>
+        <b-field>
+            <strong>Single Player Game</strong>
+        </b-field>
         <b-field label="Grid Size">
             <b-select
                 placeholder="grid size"
