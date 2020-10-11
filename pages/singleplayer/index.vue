@@ -1,10 +1,46 @@
 <template>
-
+    <section class="section">
+        <div class="columns" v-if="showStart">
+            <div class="column is-4 is-offset-4">
+                <StartSettings :selected-size="selectedSize"></StartSettings>
+            </div>
+        </div>
+        <Game v-else :game-size="selectedSize"></Game>
+    </section>
 </template>
 
 <script>
+import StartSettings from "~/components/StartSettings";
+import Game from "~/components/Game";
+
 export default {
-name: "SinglePlayerIndex"
+    name: "SinglePlayerIndex",
+    data: function () {
+        return {
+            sizes: [
+                {
+                    title: "3x3",
+                    value: "three"
+                },
+                {
+                    title: "5x5",
+                    value: "five"
+                }
+            ],
+            selectedSize: null,
+            showStart: true
+        }
+    },
+    components: {
+        StartSettings,
+        Game
+    },
+    created() {
+        this.$nuxt.$on('startSingle', (size) => {
+            this.selectedSize = size;
+            this.showStart = false;
+        });
+    }
 }
 </script>
 

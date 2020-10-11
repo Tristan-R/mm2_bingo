@@ -3,8 +3,8 @@
         <div class="columns">
             <div class="column is-offset-2 is-8">
                 <div class="columns is-multiline is-gapless is-mobile">
-                    <div class="column" :class="{'is-one-fifth': selectedSize.tiles === 25}" v-for="(value,index) in indexes" :key="index + 1">
-                        <Square :text="getText(value, index)"></Square>
+                    <div class="column" :class="{'is-one-fifth': selectedSize.tiles === 25, 'is-one-third': selectedSize.tiles === 9}" v-for="(value,index) in indexes" :key="index + 1">
+                        <Square :text="getText(value, index + 1)"></Square>
                     </div>
                 </div>
             </div>
@@ -16,26 +16,27 @@
 import Square from "~/components/Square";
 
 export default {
+    name: 'Game',
     data: function () {
         return {
             sizes: {
                 three: {
                     title: '3x3',
                     tiles: 9,
-                    midTile: 4,
+                    midTile: 0,
                     lengthMod: 'one-third'
                 },
                 five: {
                     title: '5x5',
                     tiles: 25,
-                    midTile: 12,
+                    midTile: 13,
                     lengthMod: 'one-fifth'
                 }
             },
             selectedSize: {
                 title: '5x5',
                 tiles: 25,
-                midTile: 12,
+                midTile: 13,
                 lengthMod: 'one-fifth'
             },
             items: [
@@ -75,11 +76,10 @@ export default {
                 "MULTIPLAYER LEVEL",
                 "SNAKE BLOCKS"
             ],
-            indexes: [],
-            itemsUsed: []
+            indexes: []
         }
     },
-    name: 'HomePage',
+    props: ['gameSize'],
     components: {
         Square
     },
@@ -92,6 +92,10 @@ export default {
         }
     },
     mounted: function () {
+        if (this.sizes.hasOwnProperty(this.gameSize)) {
+            this.selectedSize = this.sizes[this.gameSize];
+        }
+
         let indexes = [];
         while (indexes.length < this.selectedSize.tiles) {
             let randInt = Math.floor(Math.random() * this.items.length);
