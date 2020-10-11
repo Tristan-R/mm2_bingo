@@ -1,28 +1,14 @@
 <template>
-    <nav
-        class="navbar header has-shadow is-primary"
+    <b-navbar
+        class="navbar header has-shadow is-info"
         role="navigation"
-        aria-label="main navigation"
-    >
-        <div class="navbar-brand">
-            <a
-                class="navbar-item"
-                href="/"
-            >
-                <img
-                    src="~assets/buefy.png"
-                    alt="Buefy"
-                    height="28"
-                >
-            </a>
-
-            <div class="navbar-burger">
-                <span />
-                <span />
-                <span />
-            </div>
-        </div>
-    </nav>
+        aria-label="main navigation">
+        <template slot="brand">
+            <b-navbar-item tag="router-link" :to="{ path: '/' }">
+                Mario Maker 2 Bingo
+            </b-navbar-item>
+        </template>
+    </b-navbar>
 </template>
 
 <script>
