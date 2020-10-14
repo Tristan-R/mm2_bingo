@@ -20,7 +20,7 @@
             onClick() {
                 if (this.selectable) {
                     this.isComplete = !this.isComplete;
-                    $nuxt.$emit('update', this.id, this.isComplete);
+                    $nuxt.$emit('squareUpdated', this.id, this.isComplete);
                 }
             }
         },

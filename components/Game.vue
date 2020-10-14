@@ -28,6 +28,7 @@ export default {
                     conditions: {
                         line: {
                             complete: false,
+                            indexes: [],
                             options: [
                                 [0,1,2],
                                 [3,4,5],
@@ -39,6 +40,7 @@ export default {
                         },
                         diagonal: {
                             complete: false,
+                            indexes: [],
                             options: [
                                 [0,4,8],
                                 [2,4,6]
@@ -54,6 +56,7 @@ export default {
                     conditions: {
                         line: {
                             complete: false,
+                            indexes: [],
                             options: [
                                 [0,1,2,3,4],
                                 [5,6,7,8,9],
@@ -69,6 +72,7 @@ export default {
                         },
                         diagonal: {
                             complete: false,
+                            indexes: [],
                             options: [
                                 [0,6,12,18,24],
                                 [4,8,12,16,20]
@@ -76,6 +80,7 @@ export default {
                         },
                         stamp: {
                             complete: false,
+                            indexes: [],
                             options: [
                                 [0,1,5,6],
                                 [3,4,8,9],
@@ -94,6 +99,7 @@ export default {
                 conditions: {
                     line: {
                         complete: false,
+                        indexes: [],
                         options: [
                             [0,1,2,3,4],
                             [5,6,7,8,9],
@@ -109,6 +115,7 @@ export default {
                     },
                     diagonal: {
                         complete: false,
+                        indexes: [],
                         options: [
                             [0,6,12,18,24],
                             [4,8,12,16,20]
@@ -116,6 +123,7 @@ export default {
                     },
                     stamp: {
                         complete: false,
+                        indexes: [],
                         options: [
                             [0,1,5,6],
                             [3,4,8,9],
@@ -190,12 +198,31 @@ export default {
                 return this.items[value];
             }
         },
-        async checkConditions() {
+        async checkConditions(condition = "all") {
             let temp = this.completedIndexes.map((el,index) => el ? index : -1);
 
-            for (const cond of Object.values(this.selectedSize.conditions)) {
-                if (cond.complete) continue;
-                if (cond.options.some(ar => ar.every(el => temp.includes(el)))) cond.complete = true;
+            if (condition === "all") {
+                for (const cond of Object.values(this.selectedSize.conditions)) {
+                    if (cond.complete) continue;
+                    let option = cond.options.find(ar => ar.every(el => temp.includes(el)));
+
+                    if (option !== undefined) {
+                        cond.complete = true;
+                        cond.indexes = option
+                    }
+                }
+            } else {
+                let cond = this.selectedSize.conditions[condition];
+
+                let option = cond.options.find(ar => ar.every(el => temp.includes(el)));
+
+                if (option !== undefined) {
+                    cond.complete = true;
+                    cond.indexes = option
+                } else {
+                    cond.complete = false;
+                    cond.indexes = [];
+                }
             }
 
             if (temp.filter(el => el !== -1).length === this.selectedSize.tiles) this.completeFull = true;
@@ -207,10 +234,10 @@ export default {
             if (complete) {
                 this.checkConditions();
             } else {
-                for (const cond of Object.values(this.selectedSize.conditions)) {
+                this.completeFull = false;
+                for (const [key, cond] of Object.entries(this.selectedSize.conditions)) {
                     if (cond.indexes.includes(index)) {
-                        cond.complete = false;
-                        cond.indexes = [];
+                        this.checkConditions(key)
                     }
                 }
             }
