@@ -4,7 +4,7 @@
             <div class="column is-offset-2 is-8">
                 <div class="columns is-multiline is-gapless is-mobile">
                     <div class="column" :class="{'is-one-fifth': selectedSize.tiles === 25, 'is-one-third': selectedSize.tiles === 9}" v-for="(value,index) in indexes" :key="index + 1">
-                        <Square :text="getText(value, index + 1)"></Square>
+                        <Square :id="index" :text="getText(value, index)"></Square>
                     </div>
                 </div>
             </div>
@@ -23,21 +23,107 @@ export default {
                 three: {
                     title: '3x3',
                     tiles: 9,
-                    midTile: 0,
-                    lengthMod: 'one-third'
+                    midTile: -1,
+                    lengthMod: 'one-third',
+                    conditions: {
+                        line: {
+                            complete: false,
+                            options: [
+                                [0,1,2],
+                                [3,4,5],
+                                [6,7,8],
+                                [0,3,6],
+                                [1,4,7],
+                                [2,5,8]
+                            ]
+                        },
+                        diagonal: {
+                            complete: false,
+                            options: [
+                                [0,4,8],
+                                [2,4,6]
+                            ]
+                        }
+                    }
                 },
                 five: {
                     title: '5x5',
                     tiles: 25,
-                    midTile: 13,
-                    lengthMod: 'one-fifth'
+                    midTile: 12,
+                    lengthMod: 'one-fifth',
+                    conditions: {
+                        line: {
+                            complete: false,
+                            options: [
+                                [0,1,2,3,4],
+                                [5,6,7,8,9],
+                                [10,11,12,13,14],
+                                [15,16,17,18,19],
+                                [20,21,22,23,24],
+                                [0,5,10,15,20],
+                                [1,6,11,16,21],
+                                [2,7,12,17,22],
+                                [3,8,13,18,23],
+                                [4,9,14,19,24]
+                            ]
+                        },
+                        diagonal: {
+                            complete: false,
+                            options: [
+                                [0,6,12,18,24],
+                                [4,8,12,16,20]
+                            ]
+                        },
+                        stamp: {
+                            complete: false,
+                            options: [
+                                [0,1,5,6],
+                                [3,4,8,9],
+                                [15,16,20,21],
+                                [18,19,23,24]
+                            ]
+                        }
+                    }
                 }
             },
             selectedSize: {
                 title: '5x5',
                 tiles: 25,
-                midTile: 13,
-                lengthMod: 'one-fifth'
+                midTile: 12,
+                lengthMod: 'one-fifth',
+                conditions: {
+                    line: {
+                        complete: false,
+                        options: [
+                            [0,1,2,3,4],
+                            [5,6,7,8,9],
+                            [10,11,12,13,14],
+                            [15,16,17,18,19],
+                            [20,21,22,23,24],
+                            [0,5,10,15,20],
+                            [1,6,11,16,21],
+                            [2,7,12,17,22],
+                            [3,8,13,18,23],
+                            [4,9,14,19,24]
+                        ]
+                    },
+                    diagonal: {
+                        complete: false,
+                        options: [
+                            [0,6,12,18,24],
+                            [4,8,12,16,20]
+                        ]
+                    },
+                    stamp: {
+                        complete: false,
+                        options: [
+                            [0,1,5,6],
+                            [3,4,8,9],
+                            [15,16,20,21],
+                            [18,19,23,24]
+                        ]
+                    }
+                }
             },
             items: [
                 "ENEMY SPAM",
@@ -76,7 +162,9 @@ export default {
                 "MULTIPLAYER LEVEL",
                 "SNAKE BLOCKS"
             ],
-            indexes: []
+            indexes: [],
+            completedIndexes: [],
+            completeFull: false
         }
     },
     props: ['gameSize', 'justCustom', 'customGoals'],
@@ -101,9 +189,34 @@ export default {
             } else {
                 return this.items[value];
             }
+        },
+        async checkConditions() {
+            let temp = this.completedIndexes.map((el,index) => el ? index : -1);
+
+            for (const cond of Object.values(this.selectedSize.conditions)) {
+                if (cond.complete) continue;
+                if (cond.options.some(ar => ar.every(el => temp.includes(el)))) cond.complete = true;
+            }
+
+            if (temp.filter(el => el !== -1).length === this.selectedSize.tiles) this.completeFull = true;
         }
     },
-    mounted: function () {
+    created() {
+        this.$nuxt.$on('squareUpdated', (index, complete) => {
+            this.completedIndexes[index] = complete;
+            if (complete) {
+                this.checkConditions();
+            } else {
+                for (const cond of Object.values(this.conditions)) {
+                    if (cond.indexes.includes(index)) {
+                        cond.complete = false;
+                        cond.indexes = [];
+                    }
+                }
+            }
+        });
+    },
+    mounted() {
         if (this.sizes.hasOwnProperty(this.gameSize)) {
             this.selectedSize = this.sizes[this.gameSize];
         }
@@ -125,6 +238,11 @@ export default {
             }
         }
         this.indexes = indexes;
+
+        this.completedIndexes = new Array(this.selectedSize.tiles).fill(false);
+        if (this.selectedSize.midTile !== -1) {
+            this.completedIndexes[this.selectedSize.midTile] = true;
+        }
     }
 }
 </script>
