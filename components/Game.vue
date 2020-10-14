@@ -207,7 +207,7 @@ export default {
             if (complete) {
                 this.checkConditions();
             } else {
-                for (const cond of Object.values(this.conditions)) {
+                for (const cond of Object.values(this.selectedSize.conditions)) {
                     if (cond.indexes.includes(index)) {
                         cond.complete = false;
                         cond.indexes = [];
