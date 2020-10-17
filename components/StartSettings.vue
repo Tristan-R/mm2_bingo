@@ -169,7 +169,7 @@ export default {
                     return;
                 }
             }
-            $nuxt.$emit('startSingle', this.options);
+            this.$emit('start', this.options);
         }
     }
 }

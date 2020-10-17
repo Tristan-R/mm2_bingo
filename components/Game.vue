@@ -4,7 +4,7 @@
             <div class="column is-offset-2 is-8">
                 <div class="columns is-multiline is-gapless is-mobile">
                     <div class="column" :class="{'is-one-fifth': selectedSize.tiles === 25, 'is-one-third': selectedSize.tiles === 9}" v-for="(value,index) in indexes" :key="index + 1">
-                        <Square :id="index" :text="getText(value, index)"></Square>
+                        <Square :id="index" :text="getText(value, index)" @update="squareUpdated"></Square>
                     </div>
                 </div>
             </div>
@@ -201,6 +201,19 @@ export default {
                 return this.items[value];
             }
         },
+        squareUpdated(index, complete) {
+            this.completedIndexes[index] = complete;
+            if (complete) {
+                this.checkConditions();
+            } else {
+                this.completeFull = false;
+                for (const [key, cond] of Object.entries(this.selectedSize.conditions)) {
+                    if (cond.indexes.includes(index)) {
+                        this.checkConditions(key)
+                    }
+                }
+            }
+        },
         async checkConditions(condition = "all") {
             let temp = this.completedIndexes.map((el,index) => el ? index : -1);
 
@@ -246,21 +259,6 @@ export default {
                 })
             }
         }
-    },
-    created() {
-        this.$nuxt.$on('squareUpdated', (index, complete) => {
-            this.completedIndexes[index] = complete;
-            if (complete) {
-                this.checkConditions();
-            } else {
-                this.completeFull = false;
-                for (const [key, cond] of Object.entries(this.selectedSize.conditions)) {
-                    if (cond.indexes.includes(index)) {
-                        this.checkConditions(key)
-                    }
-                }
-            }
-        });
     },
     mounted() {
         if (this.sizes.hasOwnProperty(this.gameSize)) {

@@ -2,7 +2,7 @@
     <section class="section">
         <div class="columns" v-if="showStart">
             <div class="column is-4 is-offset-4">
-                <StartSettings :single-player="true"></StartSettings>
+                <StartSettings :single-player="true" @start="startGame"></StartSettings>
             </div>
         </div>
         <Game v-else :game-size="selectedSize" :selected-conditions="selectedConditions" :just-custom="justCustom" :custom-goals="customGoals"></Game>
@@ -38,8 +38,8 @@ export default {
         StartSettings,
         Game
     },
-    created() {
-        this.$nuxt.$on('startSingle', (options) => {
+    methods: {
+        startGame(options) {
             this.selectedSize = options.selectedSize ?? 'five';
             this.selectedConditions = options.selectedConditions;
             this.justCustom = options.justCustom;
@@ -47,7 +47,7 @@ export default {
                 this.customGoals = options.customGoals;
             }
             this.showStart = false;
-        });
+        }
     }
 }
 </script>
