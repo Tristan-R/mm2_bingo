@@ -9,7 +9,7 @@
 <script>
     export default {
         name: "Square",
-        props: ['text'],
+        props: ['id', 'text'],
         data: function () {
             return {
                 isComplete: false,
@@ -20,10 +20,11 @@
             onClick() {
                 if (this.selectable) {
                     this.isComplete = !this.isComplete;
+                    this.$emit('update', this.id, this.isComplete);
                 }
             }
         },
-        mounted: function () {
+        mounted() {
             if (this.text === 'FREE') {
                 this.isComplete = true;
                 this.selectable = false;
@@ -34,7 +35,7 @@
 
 <style scoped>
     .square {
-        border: 1px solid black;
+        border: 1px solid white;
         height: 0;
         width: 100%;
         padding-bottom: 100%;
