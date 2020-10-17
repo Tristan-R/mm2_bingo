@@ -35,7 +35,7 @@
 
 <style scoped>
     .square {
-        border: 1px solid black;
+        border: 1px solid white;
         height: 0;
         width: 100%;
         padding-bottom: 100%;
