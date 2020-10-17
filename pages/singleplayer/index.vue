@@ -5,7 +5,7 @@
                 <StartSettings :single-player="true"></StartSettings>
             </div>
         </div>
-        <Game v-else :game-size="selectedSize" :just-custom="justCustom" :custom-goals="customGoals"></Game>
+        <Game v-else :game-size="selectedSize" :selected-conditions="selectedConditions" :just-custom="justCustom" :custom-goals="customGoals"></Game>
     </section>
 </template>
 
@@ -30,6 +30,7 @@ export default {
             selectedSize: null,
             showStart: true,
             justCustom: false,
+            selectedConditions: [],
             customGoals: []
         }
     },
@@ -38,11 +39,12 @@ export default {
         Game
     },
     created() {
-        this.$nuxt.$on('startSingle', (size, justCustom, customGoals) => {
-            this.selectedSize = size;
-            this.justCustom = justCustom === true;
-            if (customGoals) {
-                this.customGoals = customGoals;
+        this.$nuxt.$on('startSingle', (options) => {
+            this.selectedSize = options.selectedSize ?? 'five';
+            this.selectedConditions = options.selectedConditions;
+            this.justCustom = options.justCustom;
+            if (options.customGoals) {
+                this.customGoals = options.customGoals;
             }
             this.showStart = false;
         });

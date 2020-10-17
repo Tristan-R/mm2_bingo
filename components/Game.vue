@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Square from "~/components/Square";
+import Square from "@/components/Square";
 
 export default {
     name: 'Game',
@@ -22,6 +22,7 @@ export default {
             sizes: {
                 three: {
                     title: '3x3',
+                    value: 'three',
                     tiles: 9,
                     midTile: -1,
                     lengthMod: 'one-third',
@@ -50,6 +51,7 @@ export default {
                 },
                 five: {
                     title: '5x5',
+                    value: 'five',
                     tiles: 25,
                     midTile: 12,
                     lengthMod: 'one-fifth',
@@ -93,6 +95,7 @@ export default {
             },
             selectedSize: {
                 title: '5x5',
+                value: 'five',
                 tiles: 25,
                 midTile: 12,
                 lengthMod: 'one-fifth',
@@ -175,7 +178,7 @@ export default {
             completeFull: false
         }
     },
-    props: ['gameSize', 'justCustom', 'customGoals'],
+    props: ['gameSize', 'selectedConditions', 'justCustom', 'customGoals'],
     components: {
         Square
     },
@@ -247,6 +250,13 @@ export default {
         if (this.sizes.hasOwnProperty(this.gameSize)) {
             this.selectedSize = this.sizes[this.gameSize];
         }
+
+        this.selectedSize.conditions = Object.keys(this.selectedSize.conditions)
+            .filter(key => this.selectedConditions.includes(key))
+            .reduce((obj, key) => {
+                obj[key] = this.selectedSize.conditions[key];
+                return obj;
+            }, {});
 
         let size = this.items.length;
         if (this.customGoals) {
