@@ -205,13 +205,20 @@ export default {
             let temp = this.completedIndexes.map((el,index) => el ? index : -1);
 
             if (condition === "all") {
-                for (const cond of Object.values(this.selectedSize.conditions)) {
+                for (const [key, cond] of Object.entries(this.selectedSize.conditions)) {
                     if (cond.complete) continue;
                     let option = cond.options.find(ar => ar.every(el => temp.includes(el)));
 
                     if (option !== undefined) {
                         cond.complete = true;
                         cond.indexes = option
+
+                        this.$buefy.notification.open({
+                            duration: 5000,
+                            message: 'Successfully completed a ' + this.$options.filters.formatCondition(key),
+                            position: 'is-bottom-right',
+                            type: 'is-success'
+                        })
                     }
                 }
             } else {
@@ -228,7 +235,16 @@ export default {
                 }
             }
 
-            if (temp.filter(el => el !== -1).length === this.selectedSize.tiles) this.completeFull = true;
+            if (temp.filter(el => el !== -1).length === this.selectedSize.tiles) {
+                this.completeFull = true;
+
+                this.$buefy.notification.open({
+                    duration: 8000,
+                    message: 'BINGO!',
+                    position: 'is-bottom-right',
+                    type: 'is-success'
+                })
+            }
         }
     },
     created() {
@@ -279,6 +295,20 @@ export default {
         this.completedIndexes = new Array(this.selectedSize.tiles).fill(false);
         if (this.selectedSize.midTile !== -1) {
             this.completedIndexes[this.selectedSize.midTile] = true;
+        }
+    },
+    filters: {
+        formatCondition: function (condition) {
+            switch (condition) {
+                case 'line':
+                    return 'Line'
+
+                case 'diagonal':
+                    return 'Diagonal'
+
+                case 'stamp':
+                    return 'Postage Stamp'
+            }
         }
     }
 }
