@@ -21,7 +21,7 @@
             </b-select>
         </b-field>
         <b-field label="Select optional conditions." v-if="options.selectedSize">
-            <div class="columns" v-if="['five','seven'].includes(options.selectedSize)">
+            <div class="columns is-mobile" v-if="['five','seven'].includes(options.selectedSize)">
                 <div class="column is-one-third">
                     <b-image
                         :src="require('@/assets/' + options.selectedSize + '-line.png')"
@@ -59,7 +59,7 @@
                     </b-checkbox>
                 </div>
             </div>
-            <div class="columns" v-if="['three'].includes(options.selectedSize)">
+            <div class="columns is-mobile" v-if="['three'].includes(options.selectedSize)">
                 <div class="column is-6">
                     <b-image
                         :src="require('@/assets/three-line.png')"

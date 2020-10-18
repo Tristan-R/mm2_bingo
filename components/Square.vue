@@ -1,6 +1,12 @@
 <template>
     <div class="square" :class="{complete: isComplete}" @click="onClick">
-        <div>
+        <div class="is-hidden-touch">
+            {{ text }}
+        </div>
+        <div v-if="size === 'five'" class="is-hidden-desktop" style="font-size: 0.4rem; line-height: 0.5rem">
+            {{ text }}
+        </div>
+        <div v-if="size === 'three'" class="is-hidden-desktop" style="font-size: 0.8rem; line-height: 1rem">
             {{ text }}
         </div>
     </div>
@@ -9,7 +15,7 @@
 <script>
     export default {
         name: "Square",
-        props: ['id', 'text'],
+        props: ['id', 'text', 'size'],
         data: function () {
             return {
                 isComplete: false,

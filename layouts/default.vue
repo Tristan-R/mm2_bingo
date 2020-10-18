@@ -1,10 +1,8 @@
 <template>
     <div>
         <NavBar></NavBar>
-        <section class="main-content columns">
-            <div class="container column is-10">
-                <nuxt />
-            </div>
+        <section class="main-content">
+            <nuxt />
         </section>
     </div>
 </template>
@@ -13,6 +11,7 @@
 import NavBar from "~/components/NavBar";
 
 export default {
+    name: "Default Layout",
     data () {
         return {}
     },
