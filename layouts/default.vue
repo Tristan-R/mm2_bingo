@@ -11,7 +11,7 @@
 import NavBar from "~/components/NavBar";
 
 export default {
-    name: "Default Layout",
+    name: "DefaultLayout",
     data () {
         return {}
     },
