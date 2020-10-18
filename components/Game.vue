@@ -4,7 +4,7 @@
             <div class="column is-offset-2 is-8">
                 <div class="columns is-multiline is-gapless is-mobile">
                     <div class="column" :class="{'is-one-fifth': selectedSize.tiles === 25, 'is-one-third': selectedSize.tiles === 9}" v-for="(value,index) in indexes" :key="index + 1">
-                        <Square :id="index" :text="getText(value, index)" @update="squareUpdated"></Square>
+                        <Square :id="index" :text="getText(value, index)" :size="selectedSize.value" @update="squareUpdated"></Square>
                     </div>
                 </div>
             </div>
