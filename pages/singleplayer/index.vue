@@ -1,7 +1,7 @@
 <template>
     <section class="section">
         <div class="columns" v-if="showStart">
-            <div class="column is-4 is-offset-4">
+            <div class="column is-6-tablet is-offset-3-tablet is-4-fullhd is-offset-4-fullhd">
                 <StartSettings :single-player="true" @start="startGame"></StartSettings>
             </div>
         </div>
