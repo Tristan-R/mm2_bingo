@@ -1,7 +1,7 @@
 <template>
     <section class="section">
         <div class="columns">
-            <div class="column is-offset-2 is-8">
+            <div class="column is-offset-3-widescreen is-6-widescreen">
                 <div class="columns is-multiline is-gapless is-mobile">
                     <div class="column" :class="{'is-one-fifth': selectedSize.tiles === 25, 'is-one-third': selectedSize.tiles === 9}" v-for="(value,index) in indexes" :key="index + 1">
                         <Square :id="index" :text="getText(value, index)" :size="selectedSize.value" @update="squareUpdated"></Square>
