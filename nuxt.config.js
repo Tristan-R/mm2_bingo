@@ -7,7 +7,7 @@ export default {
 
     // Router (https://nuxtjs.org/api/configuration-router)
     router: {
-        base: '/'
+        base: '/mm2_bingo/'
     },
 
     // Global page headers (https://go.nuxtjs.dev/config-head)
